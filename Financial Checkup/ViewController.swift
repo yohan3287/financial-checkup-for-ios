@@ -50,59 +50,56 @@ class ViewController: UIViewController {
     }
     
     @IBAction func calculateButtonDidTab(_ sender: UIButton) {
-//        guard let activeIncomeTmp = activeIncomeTextField.text else{
-//            return
-//        }
-//        guard let activeIncome = Int(activeIncomeTmp) else{
-//            return
-//        }
-        
-//        guard let passiveIncomeTmp = passiveIncomeTextField.text else{
-//            return
-//        }
-//        guard let passiveIncome = Int(passiveIncomeTmp) else{
-//            return
-//        }
-        
-//        guard let debtPaymentTmp = debtPaymentTextField.text else{
-//            return
-//        }
-//        guard let debtPayment = Int(debtPaymentTmp) else{
-//            return
-//        }
-        
-//        guard let savingTmp = savingTextField.text else{
-//            return
-//        }
-//        guard let saving = Int(savingTmp) else{
-//            return
-//        }
-                
+//        Get value
         let activeIncome = unwrapStrToInt(activeIncomeTextField.text)
         let passiveIncome = unwrapStrToInt(passiveIncomeTextField.text)
         let debtPayment = unwrapStrToInt(debtPaymentTextField.text)
         let saving = unwrapStrToInt(savingTextField.text)
         let spending = (activeIncome + passiveIncome) - (debtPayment + saving)
         
-//        print(spending)
-//        print(activeIncome)
-//        print(passiveIncome)
-//        print(debtPayment)
-//        print(saving)
-//        print("\n")
-        
+//        Calculate percentage
         let spendingPercentage = 100 * spending / (activeIncome + passiveIncome)
         let debtPaymentPercentage = 100 * debtPayment / (activeIncome + passiveIncome)
         let savingPercentage = 100 * saving / (activeIncome + passiveIncome)
         let passiveIncomePercentage = 100 * passiveIncome / (spending + debtPayment)
         
-//        print(spendingPercentage)
-//        print(debtPaymentPercentage)
-//        print(savingPercentage)
-//        print(passiveIncomePercentage)
-//        print(spendingPercentage + debtPaymentPercentage + savingPercentage)
+//        Generate report
+        var report = "Your monthly spending is \(spendingPercentage)% of your monthly active & passive income."
+        spendingResult.text = report
+
+        report = "Your monthly debt payment is \(debtPaymentPercentage)% of your monthly active & passive income.\n"
+        if(debtPaymentPercentage > 30){
+            report += "IT'S NOT GOOD! Your monthly debt payment ratio is too huge so you need to keep it at 30% or less."
+        }
+        else{
+            report += "NICE! Your debt ratio is in the safe zone."
+        }
+        debtPaymentResult.text = report
+
+        report = "Your monthly saving is \(savingPercentage)% of your monthly active & passive income.\n"
+        if(savingPercentage < 20){
+            report += "IT'S NOT GOOD! Your monthly saving ratio is too small so you need to keep it at 20% or more."
+        }
+        else{
+            report += "GOOD JOB! You have a good saving ratio."
+        }
+        savingResult.text = report
         
+        report = "Your monthly passive income is \(passiveIncomePercentage)% of your monthly spending & debt payment.\n"
+        if(passiveIncomePercentage >= 100){
+            report += "CONGRATULATIONS! You achieved your financial freedom! Don't get bored to grow it more!"
+        }
+        else if(passiveIncomePercentage >= 20){
+            report += "GOOD JOB! You have a pasive income. Keep growing until you get your financial freedom!"
+        }
+        else{
+            report += "IT'S NOT GOOD! You need to grow your passive income to achieve your financial freedom."
+        }
+        financialFreedomResult.text = report
         
+//        Change to result page
+        segmentedControl.selectedSegmentIndex = 1
+        calculatorView.isHidden = true
     }
     
     func unwrapStrToInt(_ arg : String?) -> Int{
