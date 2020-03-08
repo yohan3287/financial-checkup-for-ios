@@ -49,6 +49,34 @@ class ViewController: UIViewController {
         savingTextField.text = ""
     }
     
+    @IBAction func activeIncomeHelp(_ sender: Any) {
+        let alert = UIAlertController(title: "Active Income", message: "Active income refers to income received from performing a service and includes wages, tips, salaries, commissions, and income from businesses in which there is material participation.", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func passiveIncomeHelp(_ sender: Any) {
+        let alert = UIAlertController(title: "Passive Income", message: "Passive income is income that requires little to no effort to earn and maintain.", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func debtPaymentHelp(_ sender: Any) {
+        let alert = UIAlertController(title: "Debt Payment", message: "The act of paying back money that you have borrowed", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func savingHelp(_ sender: Any) {
+        let alert = UIAlertController(title: "Saving", message: "Saving is a part of income that you keep for the future", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     @IBAction func calculateButtonDidTab(_ sender: UIButton) {
 //        Get value
         let activeIncome = unwrapStrToInt(activeIncomeTextField.text)
