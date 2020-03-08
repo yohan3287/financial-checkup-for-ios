@@ -85,16 +85,36 @@ class ViewController: UIViewController {
         let saving = unwrapStrToInt(savingTextField.text)
         let spending = (activeIncome + passiveIncome) - (debtPayment + saving)
         
-//        Calculate percentage
-        let spendingPercentage = 100 * spending / (activeIncome + passiveIncome)
-        let debtPaymentPercentage = 100 * debtPayment / (activeIncome + passiveIncome)
-        let savingPercentage = 100 * saving / (activeIncome + passiveIncome)
-        let passiveIncomePercentage = 100 * passiveIncome / (spending + debtPayment)
+//        validation
+        if(activeIncome + passiveIncome == 0){
+            let alert = UIAlertController(title: "No Income", message: "You have no income", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+            alert.addAction(action)
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
+        if(activeIncome + passiveIncome < debtPayment + saving){
+            let alert = UIAlertController(title: "Invalid Input", message: "Your total income is less than debt payment plus saving", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+            alert.addAction(action)
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
+        var infinityFinancialFreedom = false
+        if(spending + debtPayment == 0){
+            infinityFinancialFreedom = true
+        }
         
 //        Generate report
+        let spendingPercentage = 100 * spending / (activeIncome + passiveIncome)
         var report = "Your monthly spending is \(spendingPercentage)% of your monthly active & passive income."
         spendingResult.text = report
 
+        let debtPaymentPercentage = 100 * debtPayment / (activeIncome + passiveIncome)
         report = "Your monthly debt payment is \(debtPaymentPercentage)% of your monthly active & passive income.\n"
         if(debtPaymentPercentage > 30){
             report += "IT'S NOT GOOD! Your monthly debt payment ratio is too huge so you need to keep it at 30% or less."
@@ -104,6 +124,7 @@ class ViewController: UIViewController {
         }
         debtPaymentResult.text = report
 
+        let savingPercentage = 100 * saving / (activeIncome + passiveIncome)
         report = "Your monthly saving is \(savingPercentage)% of your monthly active & passive income.\n"
         if(savingPercentage < 20){
             report += "IT'S NOT GOOD! Your monthly saving ratio is too small so you need to keep it at 20% or more."
@@ -112,16 +133,21 @@ class ViewController: UIViewController {
             report += "GOOD JOB! You have a good saving ratio."
         }
         savingResult.text = report
-        
-        report = "Your monthly passive income is \(passiveIncomePercentage)% of your monthly spending & debt payment.\n"
-        if(passiveIncomePercentage >= 100){
-            report += "CONGRATULATIONS! You achieved your financial freedom! Don't get bored to grow it more!"
-        }
-        else if(passiveIncomePercentage >= 20){
-            report += "GOOD JOB! You have a pasive income. Keep growing until you get your financial freedom!"
+        if(infinityFinancialFreedom == true){
+            report = "CONGRATULATIONS! You achieved your financial freedom! Don't get bored to grow it more!"
         }
         else{
-            report += "IT'S NOT GOOD! You need to grow your passive income to achieve your financial freedom."
+            let passiveIncomePercentage = 100 * passiveIncome / (spending + debtPayment)
+            report = "Your monthly passive income is \(passiveIncomePercentage)% of your monthly spending & debt payment.\n"
+            if(passiveIncomePercentage >= 100){
+                report += "CONGRATULATIONS! You achieved your financial freedom! Don't get bored to grow it more!"
+            }
+            else if(passiveIncomePercentage >= 20){
+                report += "GOOD JOB! You have a pasive income. Keep growing until you get your financial freedom!"
+            }
+            else{
+                report += "IT'S NOT GOOD! You need to grow your passive income to achieve your financial freedom."
+            }
         }
         financialFreedomResult.text = report
         
